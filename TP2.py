@@ -34,6 +34,7 @@ tfidf_matrix = vectorizer.fit_transform(processed_docs)
 # Imprime o vocabulário (palavras)
 print("Vocabulário:")
 print(vectorizer.get_feature_names_out())
+print("Tamanho do vocabulário:", len(vectorizer.get_feature_names_out()))
 print("\nMatriz TF-IDF:")
 print(tfidf_matrix.toarray())
 
@@ -57,3 +58,14 @@ for rank, idx in enumerate(sorted_indices, 1):
     # Mostra apenas os resultados com similaridade > 0
     if similarities[idx] > 0:
         print(f"{rank}º: '{musics[idx]}' (Similaridade: {similarities[idx]:.4f})")
+
+# ------ DESCOBRINDO MAIOR PESO ENTRE OS DOCUMENTOS ------
+max_idx = np.unravel_index(tfidf_matrix.argmax(), tfidf_matrix.shape)
+doc_idx, term_idx = max_idx
+max_value = tfidf_matrix[doc_idx, term_idx]
+termo = vectorizer.get_feature_names_out()[term_idx]
+documento = musics[doc_idx]
+
+print(f"\nMaior peso TF-IDF: {max_value:.4f}")
+print(f"Termo: '{termo}'")
+print(f"Documento: '{documento}'")
